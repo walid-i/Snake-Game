@@ -76,6 +76,26 @@ function keyPressed(){ //TODO: add WASD
    else if(dist(snakeParts[0].x, snakeParts[0].y, randX, randY) < 20){
      randX = random(10, 990);
      randY = random(10, 790);
-     flag = true;
+     grow();
    }
+ }
+
+ function grow(){
+  // get coords of previous body part
+  let preX = snakeParts[snakeParts.length - 1].x;
+  let preY = snakeParts[snakeParts.length - 1].y;
+
+  // create new body part 10 px away from previous
+  if(xSpeed == -10){
+    snakeParts[snakeParts.length] = new Snake(preX + 10, preY);
+  }
+  else if(xSpeed == 10){
+    snakeParts[snakeParts.length] = new Snake(preX - 10, preY);
+  }
+  else if(ySpeed == -10){
+    snakeParts[snakeParts.length] = new Snake(preX, preY + 10);
+  }
+  else if(ySpeed == 10){
+    snakeParts[snakeParts.length] = new Snake(preX, preY - 10);
+  }
  }
