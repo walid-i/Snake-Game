@@ -18,9 +18,11 @@ function draw() {
   
   createFood();
   rect(randX, randY, 10, 10);
-  
-  snakeParts[partCount].update();
-  snakeParts[partCount].show();
+
+  for(let i = 0; i < snakeParts.length; i++){
+    snakeParts[partCount].update();
+    snakeParts[partCount].show();
+  }
 
   
   rectMode(CENTER);
