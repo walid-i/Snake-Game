@@ -1,4 +1,3 @@
-var x = 0, y = 0, xSpeed = 10, ySpeed = 0, partCount = 0;
 var snakeParts = [];
 var randX, randY;
 var flag = false;
@@ -20,8 +19,8 @@ function draw() {
   rect(randX, randY, 10, 10);
 
   for(let i = 0; i < snakeParts.length; i++){
-    snakeParts[partCount].update();
-    snakeParts[partCount].show();
+    snakeParts[i].update();
+    snakeParts[i].show();
   }
 
   
@@ -31,14 +30,17 @@ function draw() {
 
 class Snake{
 
+  
   constructor(x, y){
     this.x = x;
     this.y = y;
+    this.xSpeed = 0;
+    this.ySpeed = 0;
   }
 
   update(){
-    this.x += xSpeed;
-    this.y += ySpeed;
+    this.x += this.xSpeed;
+    this.y += this.ySpeed;
   }
 
   show(){
@@ -50,21 +52,21 @@ class Snake{
 }
 
 function keyPressed(){ //TODO: add WASD
-  if(keyCode === LEFT_ARROW && xSpeed != 10){
-    xSpeed = -10;
-    ySpeed = 0;
+  if(keyCode === LEFT_ARROW && snakeParts[0].xSpeed != 10){
+    snakeParts[0].xSpeed = -10;
+    snakeParts[0].ySpeed = 0;
   }
-  if(keyCode === RIGHT_ARROW && xSpeed != -10){
-    xSpeed = 10;
-    ySpeed = 0;
+  if(keyCode === RIGHT_ARROW && snakeParts[0].xSpeed != -10){
+    snakeParts[0].xSpeed = 10;
+    snakeParts[0].ySpeed = 0;
   }
-  if(keyCode === UP_ARROW && ySpeed != 10){
-    ySpeed = -10;
-    xSpeed = 0;
+  if(keyCode === UP_ARROW && snakeParts[0].ySpeed != 10){
+    snakeParts[0].ySpeed = -10;
+    snakeParts[0].xSpeed = 0;
   }
-  if(keyCode === DOWN_ARROW && ySpeed != -10){
-    ySpeed = 10;
-    xSpeed = 0;
+  if(keyCode === DOWN_ARROW && snakeParts[0].ySpeed != -10){
+    snakeParts[0].ySpeed = 10;
+    snakeParts[0].xSpeed = 0;
   }
   
 }
@@ -86,16 +88,16 @@ function keyPressed(){ //TODO: add WASD
   let preY = snakeParts[snakeParts.length - 1].y;
 
   // create new body part 10 px away from previous
-  if(xSpeed == -10){
+  if(snakeParts[snakeParts.length-1].xSpeed == -10){
     snakeParts[snakeParts.length] = new Snake(preX + 10, preY);
   }
-  else if(xSpeed == 10){
+  else if(snakeParts[snakeParts.length-1].xSpeed == 10){
     snakeParts[snakeParts.length] = new Snake(preX - 10, preY);
   }
-  else if(ySpeed == -10){
+  else if(snakeParts[snakeParts.length-1].ySpeed == -10){
     snakeParts[snakeParts.length] = new Snake(preX, preY + 10);
   }
-  else if(ySpeed == 10){
+  else if(snakeParts[snakeParts.length-1].ySpeed == 10){
     snakeParts[snakeParts.length] = new Snake(preX, preY - 10);
   }
  }
