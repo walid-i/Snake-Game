@@ -12,13 +12,11 @@ function draw() {
   background(100);
   rect(randX, randY, 10, 10);
   createFood();
-  //if(snakeParts.length > 0){
-    console.log(snakeParts.length + " snake length");
-    for(let i = snakeParts.length; i >= 0; i--){
-      follow(i);
-    }
-  //}
-  console.log("snake length " + snakeParts.length);
+
+  console.log(snakeParts.length + " snake length");
+  for(let i = snakeParts.length; i >= 1; i--){
+    follow(i);
+  }
   snakeHead.update();
   snakeHead.show();
  
@@ -88,7 +86,7 @@ function keyPressed(){ //TODO: add WASD
   if(snakeParts.length == 0){ // Create new body part 10 px away from head if body doesn't exist
     let preX = snakeHead.x;
     let preY = snakeHead.y;
-
+  console.log("Before else before growth " + snakeParts.length);
     if(snakeHead.xSpeed == -10){
       snakeParts[snakeParts.length] = new Snake(preX + 10, preY);
     }
@@ -101,24 +99,28 @@ function keyPressed(){ //TODO: add WASD
     else if(snakeHead.ySpeed == 10){
       snakeParts[snakeParts.length] = new Snake(preX, preY - 10);
     }
+    console.log("Before else after growth " + snakeParts.length);
   }
 
   else{ // Create new body part 10px away from newest body part
     let preX = snakeParts[snakeParts.length - 1].x;
     let preY = snakeParts[snakeParts.length - 1].y;
-
-    if(snakeParts[snakeParts.length-1].xSpeed == -10){
+    console.log("After else before growth " + snakeParts.length);
+    console.log("my xspeed is " + snakeParts[snakeParts.length-1].xSpeed);
+    console.log("my yspeed is " + snakeParts[snakeParts.length-1].ySpeed);
+    if(snakeHead.xSpeed == -10){
       snakeParts[snakeParts.length] = new Snake(preX + 10, preY, -10, 0);
     }
-    else if(snakeParts[snakeParts.length-1].xSpeed == 10){
+    else if(snakeHead.xSpeed == 10){
       snakeParts[snakeParts.length] = new Snake(preX - 10, preY, 10, 0);
     }
-    else if(snakeParts[snakeParts.length-1].ySpeed == -10){
+    else if(snakeHead.ySpeed == -10){
       snakeParts[snakeParts.length] = new Snake(preX, preY + 10, 0, -10);
     }
-    else if(snakeParts[snakeParts.length-1].ySpeed == 10){
+    else if(snakeHead.ySpeed == 10){
       snakeParts[snakeParts.length] = new Snake(preX, preY - 10, 0, 10);
     }
+    console.log("after else after growth " + snakeParts.length);
   }
  }
 
@@ -130,19 +132,12 @@ function keyPressed(){ //TODO: add WASD
     snakeParts[index-1].show();
     console.log("Here in follow 1");
   }
-  // else if(index == 1){
-  //   console.log(index + " index in follow after else");
-  //   snakeParts[index-1].x = snakeParts[0].x
-  //   snakeParts[index-1].y = snakeParts[0].y
-  //   snakeParts[index-1].show();
-  //   console.log("Here in follow 2");
-  // }
   else if(index > 1){
     console.log(index + " index in follow after else");
     snakeParts[index-1].x = snakeParts[index - 2].x
     snakeParts[index-1].y = snakeParts[index - 2].y
     snakeParts[index-1].show();
-    console.log("Here in follow 3");
+    console.log("Here in follow 2");
   }
 }
  
