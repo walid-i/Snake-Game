@@ -1,19 +1,20 @@
 var snakeHead, snakeParts = [];
 var randX, randY;
-var flag = false;
+var gameover = false;
 
 function setup() { 
+  var gameWindowX = windowWidth / 3, gameWindowY = windowHeight * 2 / 3;
   snakeHead = new Snake(30, 30, 0, 0);
-  createCanvas(1000, 800);
-  frameRate(10);
+  //createCanvas(1000, 800);
+  createCanvas(gameWindowX, gameWindowY);
+  frameRate(20);
 } 
 
 function draw() { 
   background(100);
   rect(randX, randY, 10, 10);
   createFood();
-
-  console.log(snakeParts.length + " snake length");
+  detectCollision();
   for(let i = snakeParts.length; i >= 1; i--){
     follow(i);
   }
@@ -42,7 +43,13 @@ class Snake{
 
   show(){
     fill(255);
-    rect(this.x, this.y, 10, 10);
+    // if gameover, don't show rectangles
+    if(!gameover){
+      rect(this.x, this.y, 10, 10);
+    }
+    else if(gameover){
+      rect(this.x, this.y, 0, 0);
+    }
   }
 
 
@@ -68,16 +75,14 @@ function keyPressed(){ //TODO: add WASD
   
 }
 
- function createFood(){ //TODO: make food not appear on existing body
-   if(randX == null){
-    randX = random(10,990), randY = random(10, 790);
-   }
-   else if(dist(snakeHead.x, snakeHead.y, randX, randY) < 20){
-     randX = random(10, 990);
-     randY = random(10, 790);
-     console.log("grow about to be called");
-     grow();
-     flag = true;
+  function createFood(){ //TODO: make food not appear on existing body
+    if(randX == null){
+      randX = random(10, windowWidth / 3), randY = random(10, windowHeight * 2 / 3);
+    }
+    else if(dist(snakeHead.x, snakeHead.y, randX, randY) < 10){
+      randX = random(10, windowWidth / 3);
+      randY = random(10, windowHeight * 2 / 3);
+      grow();
    }
  }
 
@@ -86,7 +91,6 @@ function keyPressed(){ //TODO: add WASD
   if(snakeParts.length == 0){ // Create new body part 10 px away from head if body doesn't exist
     let preX = snakeHead.x;
     let preY = snakeHead.y;
-  console.log("Before else before growth " + snakeParts.length);
     if(snakeHead.xSpeed == -10){
       snakeParts[snakeParts.length] = new Snake(preX + 10, preY);
     }
@@ -99,15 +103,11 @@ function keyPressed(){ //TODO: add WASD
     else if(snakeHead.ySpeed == 10){
       snakeParts[snakeParts.length] = new Snake(preX, preY - 10);
     }
-    console.log("Before else after growth " + snakeParts.length);
   }
 
   else{ // Create new body part 10px away from newest body part
     let preX = snakeParts[snakeParts.length - 1].x;
     let preY = snakeParts[snakeParts.length - 1].y;
-    console.log("After else before growth " + snakeParts.length);
-    console.log("my xspeed is " + snakeParts[snakeParts.length-1].xSpeed);
-    console.log("my yspeed is " + snakeParts[snakeParts.length-1].ySpeed);
     if(snakeHead.xSpeed == -10){
       snakeParts[snakeParts.length] = new Snake(preX + 10, preY, -10, 0);
     }
@@ -120,24 +120,42 @@ function keyPressed(){ //TODO: add WASD
     else if(snakeHead.ySpeed == 10){
       snakeParts[snakeParts.length] = new Snake(preX, preY - 10, 0, 10);
     }
-    console.log("after else after growth " + snakeParts.length);
   }
  }
 
- function follow(index){
-   console.log(index + " index in follow before if");
-  if(index == 1){
-    snakeParts[index-1].x = snakeHead.x;
-    snakeParts[index-1].y = snakeHead.y;
-    snakeParts[index-1].show();
-    console.log("Here in follow 1");
+ function follow(length){
+  if(length == 1){
+    snakeParts[length-1].x = snakeHead.x;
+    snakeParts[length-1].y = snakeHead.y;
+    snakeParts[length-1].show();
   }
-  else if(index > 1){
-    console.log(index + " index in follow after else");
-    snakeParts[index-1].x = snakeParts[index - 2].x
-    snakeParts[index-1].y = snakeParts[index - 2].y
-    snakeParts[index-1].show();
-    console.log("Here in follow 2");
+  else if(length > 1){
+    snakeParts[length-1].x = snakeParts[length - 2].x
+    snakeParts[length-1].y = snakeParts[length - 2].y
+    snakeParts[length-1].show();
   }
 }
+
+function detectCollision(){
+  for(let i = 0; i < snakeParts.length; i++){
+    if(dist(snakeParts[i].x, snakeParts[i].y, snakeHead.x, snakeHead.y) < 10){
+      gameover = true;
+      //console.log("part " + i + " collide with head. Their distance is " + dist(snakeParts[i].x, snakeParts[i].x, snakeHead.x, snakeHead.y));
+    }
+  }
+}
+
+// function foodOnBody(x, y){
+//   let flag = true;
+//   while(flag == true){
+//     for(let i = 0; i < snakeParts.length; i++){
+//       if(x == snakeParts[i].x && y == snakeParts[i].y){
+//         x = rand(10, 990);
+//         y = rand(10, 790);
+//         foodOnBody(x, y);
+//         return;
+//       }
+//     }
+//   }
+// }
  
