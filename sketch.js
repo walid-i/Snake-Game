@@ -20,10 +20,6 @@ function draw() {
   }
   snakeHead.update();
   snakeHead.show();
- 
-  
-  rectMode(CENTER);
-  rect(100, 100, 30, 30)
 }
 
 class Snake{
@@ -143,19 +139,8 @@ function detectCollision(){
       //console.log("part " + i + " collide with head. Their distance is " + dist(snakeParts[i].x, snakeParts[i].x, snakeHead.x, snakeHead.y));
     }
   }
+  if(snakeHead.x < 0 || snakeHead.x > windowWidth / 3 || snakeHead.y < 0 || snakeHead.y > windowWidth * 2 / 3){
+    gameover = true;
+  }
 }
-
-// function foodOnBody(x, y){
-//   let flag = true;
-//   while(flag == true){
-//     for(let i = 0; i < snakeParts.length; i++){
-//       if(x == snakeParts[i].x && y == snakeParts[i].y){
-//         x = rand(10, 990);
-//         y = rand(10, 790);
-//         foodOnBody(x, y);
-//         return;
-//       }
-//     }
-//   }
-// }
  
